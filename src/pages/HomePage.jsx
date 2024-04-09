@@ -2,7 +2,7 @@
 
 function HomePage() {
   return (
-    <div>Hola manito</div>
+    <div>Songify</div>
   )
 }
 
