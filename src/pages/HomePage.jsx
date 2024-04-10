@@ -2,7 +2,7 @@
 
 function HomePage() {
   return (
-    <div>Songify</div>
+    <div className="main-container">Songify</div>
   )
 }
 

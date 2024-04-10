@@ -4,21 +4,24 @@ import LoginPage from "./pages/LoginPage";
 import SignUpPage from "./pages/SignUpPage";
 import ErrorPage from "./pages/ErrorPage";
 import NotFoundPage from "./pages/NotFoundPage";
-import PlaylistPage from "./pages/PlaylistsPage";
+import PlaylistsPage from "./pages/PlaylistsPage";
 import ProfilePage from "./pages/ProfilePage";
-import SearchPage from "./pages/SearchPage";
-import SearchBar from "./components/SearchBar";
+import ExplorePage from "./pages/ExplorePage";
+import LikedPage from "./pages/LikedPage";
+// import SearchBar from "./components/SearchBar";
 import IsPrivate from "./components/isPrivate";
+import Navbar from "./components/Navbar";
 import "../src/Styles/index.css";
 
 function App() {
   return (
     <>
-      <SearchBar />
+      {/* <SearchBar /> */}
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage />} />
-        <Route path="/singup" element={<SignUpPage />} />
+        <Route path="/signup" element={<SignUpPage />} />
         <Route
           path="/profile"
           element={
@@ -27,8 +30,16 @@ function App() {
             </IsPrivate>
           }
         />
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/playlist" element={<PlaylistPage />} />
+        <Route path="/explore" element={<ExplorePage />} />
+        <Route path="/liked" element={<LikedPage />} />
+        <Route
+          path="/playlists"
+          element={
+            <IsPrivate>
+              <PlaylistsPage />
+            </IsPrivate>
+          }
+        />
         <Route path="/error" element={<ErrorPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
