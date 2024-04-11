@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import NewPlaylistButton from "./NewPlaylistButton";
 import Playlist from "./Playlist";
 import AddPlaylistModal from "./AddPlaylistModal";
+import "../Styles/Navbar.css"
 
 function NavbarComp() {
   return (
@@ -15,8 +16,10 @@ function NavbarComp() {
         <NavLink to="/liked">Liked</NavLink>
       </section>
       <section className="navbar-section">
+        <div className="add-playlist-container">
         <NavLink to="/playlists">Playlists</NavLink>
         <NewPlaylistButton />
+        </div>
         {/* <AddPlaylistModal /> */}
         {/* <Playlist /> */}
       </section>

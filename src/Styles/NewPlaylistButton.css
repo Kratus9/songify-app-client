@@ -1,12 +1,17 @@
-button {
+.create-playlist-button {
     background: none;
     border: none;
     color: white;
     border-radius: 50%;
+    font-size: 20px;
 }
 
-button:hover {
+.create-playlist-button:hover {
     cursor: pointer;
     transition: all 0.3s ease-in-out;
     background-color: #535353;
+}
+
+.button {
+    padding-right: 8.7%;
 }
