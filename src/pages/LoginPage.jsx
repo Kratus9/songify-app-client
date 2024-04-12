@@ -1,7 +1,7 @@
 import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import service from "../../services/api";
 import { useState } from "react";
+import service from "../../services/api";
 
 function LoginPage() {
   const navigate = useNavigate();

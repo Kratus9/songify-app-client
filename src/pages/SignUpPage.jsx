@@ -20,7 +20,6 @@ function SignUpPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       console.log("FormData before sending:", formData);
       const response = await service.post("/auth/register", formData);
