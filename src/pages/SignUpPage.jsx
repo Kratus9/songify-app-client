@@ -1,10 +1,11 @@
-import { Form, Button } from "react-bootstrap";
-import { useNavigate } from "react-router-dom";
-import service from "../../services/api";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { Form, Button } from "react-bootstrap";
+import service from "../../services/api";
 
 function SignUpPage() {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState("");
   const [formData, setFormData] = useState({
     name: "",
     username: "",
@@ -14,31 +15,17 @@ function SignUpPage() {
   });
 
   const handleChange = (e) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
-    console.log(formData)
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
     try {
-      const params = {}
-      params.append(formData.name);
-      params.append(formData.username);
-      params.append(formData.email);
-      params.append(formData.password);
-      params.append(formData.repeatPassword);
-      // const formDataToSend = new FormData();
-      // console.log(formData)
-      // Object.keys(formData).forEach((key) => {
-      //   formDataToSend.append(key, formData[key])
-      // })
-      console.log("Params antes de envio:", params);
-      await service.post(`/auth/register?${params.toString()}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-      });
+      console.log("FormData before sending:", formData);
+      const response = await service.post("/auth/register", formData);
+      console.log(response.data);
+      navigate("/");
     } catch (error) {
       if (error.response && error.response.status === 400) {
         console.log(error.response.data);
@@ -48,52 +35,57 @@ function SignUpPage() {
       }
     }
   };
+
   return (
     <div>
-      <Form className="signup-form">
+      <Form onSubmit={handleSubmit} className="signup-form">
         <label htmlFor="name">Name</label>
         <Form.Control
           type="text"
+          required
           id="name"
-          value={formData.name}
           name="name"
+          value={formData.name}
           onChange={handleChange}
         />
         <label htmlFor="username">Username</label>
         <Form.Control
           type="text"
+          required
+          name="username"
           id="username"
           value={formData.username}
-          name="username"
           onChange={handleChange}
         />
-        <label htmlFor="email">Email</label>
+        <label htmlFor="email">E-mail</label>
         <Form.Control
-          type="text"
+          type="email"
+          required
           id="email"
-          value={formData.email}
           name="email"
+          value={formData.email}
           onChange={handleChange}
         />
-        <label htmlFor="Password">Password</label>
+        <label htmlFor="password">Password</label>
         <Form.Control
           type="password"
+          required
           id="password"
-          value={formData.password}
           name="password"
+          value={formData.password}
           onChange={handleChange}
         />
-        <label htmlFor="repeatPassword">Repeat Password</label>
+        <label htmlFor="repeatPassword">Repeat password</label>
         <Form.Control
-          type="text"
+          type="password"
+          required
           id="repeatPassword"
-          value={formData.repeatPassword}
           name="repeatPassword"
+          value={formData.repeatPassword}
           onChange={handleChange}
         />
-        <Button type="button" onClick={() => handleSubmit()}>
-          Sign Up
-        </Button>
+        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+        <Button type="submit">Sign up</Button>
       </Form>
     </div>
   );

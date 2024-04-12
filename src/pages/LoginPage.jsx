@@ -2,12 +2,10 @@ import { Form, Button } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import service from "../../services/api";
 import { useState } from "react";
-import { AuthContext } from "../context/auth.context";
-import { useContext } from "react";
 
 function LoginPage() {
-  const { activeUserId } = useContext(AuthContext);
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState();
   const [userData, setUserData] = useState({
     username: "",
     password: "",
@@ -19,12 +17,13 @@ function LoginPage() {
       [e.target.name]: e.target.value,
     }));
   };
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      const userId = activeUserId;
-      await service.post("/auth/login", userData, userId);
+      await service.post("/auth/login", userData);
+      navigate("/");
     } catch (error) {
-      if (error.response && error.response.status === 400) {
+      if (error.response && error.response.status === 401) {
         console.log(error.response.data);
         setErrorMessage(error.response.data.errorMessage);
       } else {
@@ -34,7 +33,7 @@ function LoginPage() {
   };
   return (
     <div>
-      <Form className="login-form">
+      <Form onSubmit={handleSubmit} className="login-form">
         <label htmlFor="username">Username</label>
         <Form.Control
           type="text"
@@ -45,15 +44,14 @@ function LoginPage() {
         />
         <label htmlFor="password">Password</label>
         <Form.Control
-          type="text"
+          type="password"
           id="password"
           value={userData.password}
           name="password"
           onChange={handleChange}
         />
-        <Button type="button" onClick={() => handleSubmit()}>
-          Login
-        </Button>
+        {errorMessage && <p style={{ color: "red" }}>{errorMessage}</p>}
+        <Button type="submit">Login</Button>
       </Form>
     </div>
   );
